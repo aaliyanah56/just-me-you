@@ -1432,3 +1432,61 @@ footer .brand b {
   transform: translateY(-4px);
   box-shadow: 0 16px 30px rgba(14, 74, 64, .2);
 }
+
+
+/* =========================================
+   HOMEPAGE TYPOGRAPHY — CONSISTENT HIERARCHY
+========================================= */
+
+/* Keep every homepage section title consistent, including titles inside bands. */
+main > section h2,
+main > section .band h2 {
+  font-size: clamp(2rem, 3.6vw, 2.65rem);
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+/* Keep all homepage subtopic and card titles at one consistent size and weight. */
+main > section h3 {
+  font-size: 1.15rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+/* =========================================
+   HOMEPAGE FEATURE CARDS — EMERALD & GOLD
+========================================= */
+
+#programmes .grid .card h3,
+#story .card h3,
+#about .card h3,
+#beyond .card h3,
+#brothers .card h3,
+#team .card h3,
+#grow-alone .card h3 {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+#programmes .grid .card,
+#story .card,
+#about .card,
+#beyond .card,
+#brothers .card,
+#team .card,
+#grow-alone .card {
+  background: var(--brand);
+  border: 1px solid var(--gold);
+  color: var(--cream);
+}
+
+#programmes .grid .card p,
+#story .card p,
+#about .card p,
+#beyond .card p,
+#brothers .card p,
+#team .card p,
+#grow-alone .card p {
+  color: rgba(251, 246, 233, .92);
+}
