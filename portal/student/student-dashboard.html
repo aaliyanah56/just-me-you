@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard | URWA</title>
     <link rel="stylesheet" href="../../css/portal.css">
+    <link rel="stylesheet" href="../../css/dashboard-live.css">
 </head>
 <body data-urwa-role="student">
 <div class="urwa-app">
@@ -72,6 +73,7 @@
             </header>
 
             <div class="urwa-content" id="dashboard">
+                <section class="urwa-card urwa-live-status" id="student-live-overview" aria-live="polite"><strong>Loading your learning records…</strong><p>Your programme, halaqa and progress will appear here.</p></section>
                 <section class="urwa-welcome">
                     <div>
                         <h2>Assalaamu alaykum, <span data-profile-name>Student Name</span></h2>
@@ -184,7 +186,7 @@
                             </div>
                             <span class="urwa-badge info">My work</span>
                         </div>
-                        <div class="urwa-empty">
+                        <div class="urwa-empty" id="student-assignments-list">
                             <strong>No assignments to display</strong>
                             Your Abla's assignments will appear here.
                         </div>
@@ -246,5 +248,6 @@ function toggleSidebar() {
 }
 </script>
 <script type="module" src="../../js/auth.js"></script>
+<script type="module" src="../../js/dashboard-data.js"></script>
 </body>
 </html>

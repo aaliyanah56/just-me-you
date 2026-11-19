@@ -1,4 +1,0 @@
-# URWA is a plain static HTML/CSS/JavaScript site.
-# Publish the repository root so nested portal pages are included.
-[build]
-  publish = "."

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abla Dashboard | URWA</title>
     <link rel="stylesheet" href="../../css/portal.css">
+    <link rel="stylesheet" href="../../css/dashboard-live.css">
 </head>
 <body data-urwa-role="teacher">
 <div class="urwa-app">
@@ -73,6 +74,7 @@
             </header>
 
             <div class="urwa-content" id="overview">
+                <section class="urwa-card urwa-live-status" id="teacher-live-overview" aria-live="polite"><strong>Loading your teaching records…</strong><p>Your halaqas and students will appear here.</p></section>
                 <div class="urwa-page-heading">
                     <h1>Assalaamu alaykum, Abla</h1>
                     <p>Manage your halaqa, guide your students and follow their learning progress.</p>
@@ -154,7 +156,7 @@
                                 <div class="urwa-date-label">Attendance session</div>
                                 <div class="urwa-date-value">Select your class date</div>
                             </div>
-                            <input type="date" aria-label="Class date">
+                            <input id="teacher-attendance-date" type="date" aria-label="Class date">
                         </div>
 
                         <div class="urwa-grid urwa-grid-4">
@@ -164,7 +166,7 @@
                             <div class="urwa-attendance-card" style="background:#eaf0ff"><strong>—</strong><span>Excused</span></div>
                         </div>
 
-                        <div style="margin-top:20px" class="urwa-empty">
+                        <div style="margin-top:20px" class="urwa-empty" id="teacher-attendance-roster">
                             <strong>Your assigned students will appear here</strong>
                             Mark each student's attendance once the halaqa list is loaded.
                         </div>
@@ -200,7 +202,7 @@
                                 <p class="urwa-card-subtitle">Students will see your instructions in their portal.</p>
                             </div>
                         </div>
-                        <form>
+                        <form id="teacher-assignment-form">
                             <div class="urwa-form-row">
                                 <div class="urwa-form-group">
                                     <label for="assignment-title">Assignment title</label>
@@ -235,7 +237,8 @@
                                 <textarea id="assignment-instructions" placeholder="Write the work students should complete..."></textarea>
                             </div>
                             <button class="urwa-btn urwa-btn-primary" type="button">Create Assignment</button>
-                        </form>
+                        <p id="teacher-assignment-message" role="status" aria-live="polite"></p>
+</form>
                     </div>
                 </section>
 
@@ -306,5 +309,6 @@ function toggleSidebar() {
 }
 </script>
 <script type="module" src="../../js/auth.js"></script>
+<script type="module" src="../../js/dashboard-data.js"></script>
 </body>
 </html>

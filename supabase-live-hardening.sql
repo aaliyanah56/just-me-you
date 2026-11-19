@@ -24,3 +24,19 @@ CREATE INDEX IF NOT EXISTS idx_student_enrollments_reviewed_by ON public.student
 CREATE INDEX IF NOT EXISTS idx_submissions_reviewed_by ON public.submissions(reviewed_by);
 CREATE INDEX IF NOT EXISTS idx_submissions_student_id ON public.submissions(student_id);
 CREATE INDEX IF NOT EXISTS idx_teacher_assignments_halaqa_id ON public.teacher_assignments(halaqa_id);
+
+
+-- Applied to the live project on 2026-11-19. Restrict Abla profile reads to approved students in assigned halaqas.
+CREATE POLICY "approved teachers read assigned student profiles"
+ON public.profiles FOR SELECT TO authenticated
+USING (
+  role = 'student'::public.urwa_role
+  AND EXISTS (
+    SELECT 1 FROM public.student_enrollments e
+    JOIN public.teacher_assignments ta ON ta.halaqa_id = e.halaqa_id
+    WHERE e.student_id = profiles.id
+      AND e.status = 'approved'::public.account_status
+      AND ta.teacher_id = (SELECT auth.uid())
+      AND public.is_approved_teacher_of(e.halaqa_id)
+  )
+);

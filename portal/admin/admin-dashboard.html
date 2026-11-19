@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | URWA</title>
     <link rel="stylesheet" href="../../css/portal.css">
+    <link rel="stylesheet" href="../../css/dashboard-live.css">
 </head>
 <body data-urwa-role="admin">
 <div class="urwa-app">
@@ -221,6 +222,7 @@
                     </section>
                 </div>
 
+                <section class="urwa-card urwa-live-status" id="admin-live-status" aria-live="polite"><strong>Connecting to URWA records…</strong><p>Student and Abla accounts will appear here.</p></section>
                 <section id="admissions">
                     <h3 class="urwa-section-title">Recent Admissions</h3>
                     <div class="urwa-card">
@@ -236,7 +238,7 @@
                                 <thead>
                                     <tr><th>Applicant</th><th>Programme</th><th>Date Applied</th><th>Status</th><th>Action</th></tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="admin-admissions-body">
                                     <tr><td colspan="5">Student applications will appear here after Supabase is connected.</td></tr>
                                 </tbody>
                             </table>
@@ -256,7 +258,7 @@
                                 <thead>
                                     <tr><th>Student</th><th>Programme</th><th>Halaqa</th><th>Assigned Abla</th><th>Status</th></tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="admin-students-body">
                                     <tr><td colspan="5">Student records will appear here.</td></tr>
                                 </tbody>
                             </table>
@@ -276,7 +278,7 @@
                                 <thead>
                                     <tr><th>Abla</th><th>Specialisation</th><th>Assigned Halaqa</th><th>Students</th><th>Status</th></tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="admin-teachers-body">
                                     <tr><td colspan="5">Approved teacher records will appear here.</td></tr>
                                 </tbody>
                             </table>
@@ -333,7 +335,7 @@
                 <section id="announcements">
                     <h3 class="urwa-section-title">Create an Announcement</h3>
                     <div class="urwa-card">
-                        <form>
+                        <form id="admin-announcement-form">
                             <div class="urwa-form-group">
                                 <label for="announcement-title">Announcement title</label>
                                 <input id="announcement-title" type="text" placeholder="Enter announcement title">
@@ -346,9 +348,9 @@
                                 <div class="urwa-form-group">
                                     <label for="announcement-audience">Audience</label>
                                     <select id="announcement-audience">
-                                        <option>Everyone</option>
-                                        <option>Students</option>
-                                        <option>Ablas / Teachers</option>
+                                        <option value="all">Everyone</option>
+                                        <option value="students">Students</option>
+                                        <option value="teachers">Ablas / Teachers</option>
                                         <option>Selected halaqas</option>
                                     </select>
                                 </div>
@@ -396,5 +398,6 @@ function toggleSidebar() {
 }
 </script>
 <script type="module" src="../../js/auth.js"></script>
+<script type="module" src="../../js/dashboard-data.js"></script>
 </body>
 </html>
