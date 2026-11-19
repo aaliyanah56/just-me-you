@@ -78,3 +78,38 @@ create index if not exists department_memberships_assigned_by_idx on public.depa
 create index if not exists department_goals_created_by_idx on public.department_goals(created_by);
 create index if not exists department_reports_submitted_by_idx on public.department_reports(submitted_by);
 create index if not exists department_reports_reviewed_by_idx on public.department_reports(reviewed_by);
+
+-- Prevent department heads from attributing goals to another account.
+drop policy if exists "department heads create goals" on public.department_goals;
+create policy "department heads create goals"
+on public.department_goals for insert to authenticated
+with check (
+  public.is_admin()
+  or (
+    created_by=(select auth.uid())
+    and exists (
+      select 1 from public.department_memberships m
+      where m.profile_id=(select auth.uid()) and m.department_key=department_goals.department_key and m.access_level='head'
+    )
+  )
+);
+drop policy if exists "department heads update goals" on public.department_goals;
+create policy "department heads update goals"
+on public.department_goals for update to authenticated
+using (
+  public.is_admin()
+  or exists (
+    select 1 from public.department_memberships m
+    where m.profile_id=(select auth.uid()) and m.department_key=department_goals.department_key and m.access_level='head'
+  )
+)
+with check (
+  public.is_admin()
+  or (
+    created_by=(select auth.uid())
+    and exists (
+      select 1 from public.department_memberships m
+      where m.profile_id=(select auth.uid()) and m.department_key=department_goals.department_key and m.access_level='head'
+    )
+  )
+);
