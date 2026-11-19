@@ -72,3 +72,9 @@ with check (
   and exists (select 1 from public.department_memberships m where m.profile_id=(select auth.uid()) and m.department_key=department_reports.department_key)
   and (goal_id is null or exists (select 1 from public.department_goals g where g.id=department_reports.goal_id and g.department_key=department_reports.department_key))
 );
+
+-- Supporting indexes for foreign-key joins and audit attribution.
+create index if not exists department_memberships_assigned_by_idx on public.department_memberships(assigned_by);
+create index if not exists department_goals_created_by_idx on public.department_goals(created_by);
+create index if not exists department_reports_submitted_by_idx on public.department_reports(submitted_by);
+create index if not exists department_reports_reviewed_by_idx on public.department_reports(reviewed_by);
