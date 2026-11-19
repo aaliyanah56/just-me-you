@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Department Tracker | URWA</title>
+<link rel="stylesheet" href="../../css/portal.css">
+<style>
+:root{--dt-green:#0e4a40;--dt-gold:#c6a75e;--dt-cream:#fbf6e9;--dt-line:#e7e4dc}
+.dt-wrap{max-width:1180px;margin:auto}.dt-hero{background:linear-gradient(120deg,#0e4a40,#123c35);color:#fff;padding:28px;border-radius:18px;margin-bottom:22px}.dt-hero h1{margin:0 0 8px;font:600 clamp(1.6rem,3vw,2.2rem) Georgia,serif}.dt-hero p{margin:0;color:#e7eee9}.dt-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.dt-stat,.dt-panel,.dt-card{background:#fff;border:1px solid var(--dt-line);border-radius:14px;padding:18px}.dt-stat small{display:block;color:#687080}.dt-stat strong{display:block;font-size:1.7rem;color:var(--dt-green);margin-top:5px}.dt-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.dt-panel h2{font:600 1.25rem Georgia,serif;color:var(--dt-green);margin:0 0 14px}.dt-field{display:grid;gap:6px;margin:0 0 12px}.dt-field label{font-size:.86rem;font-weight:700;color:#34433e}.dt-field input,.dt-field select,.dt-field textarea{width:100%;padding:11px 12px;border:1px solid #d8ddd8;border-radius:9px;background:#fff;font:inherit}.dt-field textarea{min-height:86px;resize:vertical}.dt-btn{background:var(--dt-green);color:white;border:0;border-radius:9px;padding:11px 16px;font-weight:700;cursor:pointer}.dt-btn.secondary{background:#e3f0ea;color:var(--dt-green);border:1px solid #bfd5ca}.dt-btn:disabled{opacity:.55;cursor:wait}.dt-list{display:grid;gap:12px}.dt-card{padding:15px}.dt-card h3{margin:0 0 6px;color:var(--dt-green);font-size:1.02rem}.dt-meta{font-size:.82rem;color:#687080;display:flex;gap:10px;flex-wrap:wrap}.dt-card p{margin:9px 0;color:#39443f;line-height:1.5}.dt-pill{display:inline-block;padding:4px 9px;border-radius:999px;background:#e3f0ea;color:#0e4a40;font-size:.75rem;font-weight:700}.dt-progress{height:8px;background:#edf0ec;border-radius:20px;overflow:hidden;margin:9px 0}.dt-progress span{display:block;height:100%;background:#c6a75e}.dt-muted{color:#687080;font-size:.9rem}.dt-message{margin:12px 0;padding:10px 12px;border-radius:9px;background:#e3f0ea;color:#0e4a40}.dt-message.error{background:#fff0ed;color:#8c2f20}.dt-section{margin:20px 0}.dt-section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:12px}.dt-section-head h2{margin:0;color:var(--dt-green);font:600 1.4rem Georgia,serif}.dt-hidden{display:none!important}.dt-table{width:100%;border-collapse:collapse;font-size:.9rem}.dt-table th,.dt-table td{text-align:left;padding:10px;border-bottom:1px solid var(--dt-line)}.dt-table select{padding:7px;border:1px solid var(--dt-line);border-radius:7px}
+@media(max-width:850px){.dt-stats{grid-template-columns:repeat(2,1fr)}.dt-grid{grid-template-columns:1fr}}@media(max-width:520px){.dt-stats{grid-template-columns:1fr 1fr}.dt-panel{padding:14px}.dt-hero{padding:22px}}
+</style>
+</head>
+<body>
+<div class="urwa-app"><div class="urwa-layout">
+<aside class="urwa-sidebar" id="sidebar"><div class="urwa-brand"><img src="../../assets/logo.jpg" alt="URWA Logo"><div><div class="urwa-brand-name">URWA</div><div class="urwa-brand-tagline">DEPARTMENT TRACKER</div></div></div>
+<div class="urwa-profile"><div class="urwa-avatar">D</div><div><strong data-profile-name>Department Team</strong><span>Department workspace</span></div></div>
+<nav class="urwa-nav"><div class="urwa-nav-label">Workspace</div><a class="active" href="#overview">▦ Overview</a><a href="#goals">◎ Goals & targets</a><a href="#reports">▤ Progress reports</a><a href="#submit">＋ Submit update</a><a href="#access" id="accessNav" class="dt-hidden">♙ Team access</a></nav>
+<div class="urwa-sidebar-bottom"><a href="../../departments.html">Our Departments</a><a href="../../index.html">Main Website</a><a href="#" data-urwa-logout>↪ Logout</a></div></aside>
+<main class="urwa-main"><header class="urwa-topbar"><div class="urwa-topbar-left"><button class="urwa-menu-button" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button><div><div class="urwa-topbar-title">Department Management</div><div class="urwa-user-role">Goals, accountability and reporting</div></div></div><div class="urwa-topbar-right"><span class="urwa-user-name" data-profile-name></span></div></header>
+<div class="urwa-content"><div class="dt-wrap">
+<section class="dt-hero" id="overview"><h1>Department Management Tracker</h1><p>Turn each department’s vision into clear goals, measurable targets, evidence and regular progress reports.</p></section>
+<div id="pageMessage" aria-live="polite"></div>
+<div class="dt-stats"><div class="dt-stat"><small>Departments assigned</small><strong id="statDepartments">—</strong></div><div class="dt-stat"><small>Active goals</small><strong id="statGoals">—</strong></div><div class="dt-stat"><small>Reports submitted</small><strong id="statReports">—</strong></div><div class="dt-stat"><small>Awaiting review</small><strong id="statPending">—</strong></div></div>
+<section class="dt-section" id="goals"><div class="dt-section-head"><h2>Goals & targets</h2><span class="dt-muted">Owned by department heads</span></div><div class="dt-list" id="goalList"><div class="dt-card">Loading goals…</div></div></section>
+<div class="dt-grid dt-section">
+<section class="dt-panel" id="createGoalPanel"><h2>Create a department goal</h2><form id="goalForm">
+<div class="dt-field"><label for="goalDepartment">Department</label><select id="goalDepartment" required></select></div>
+<div class="dt-field"><label for="goalTitle">Goal title</label><input id="goalTitle" required maxlength="140" placeholder="e.g. Improve halaqa attendance follow-up"></div>
+<div class="dt-field"><label for="goalDescription">Description and intended outcome</label><textarea id="goalDescription" placeholder="What will this goal achieve?"></textarea></div>
+<div class="dt-field"><label for="goalMetric">Target / measure</label><input id="goalMetric" placeholder="e.g. Monthly attendance reports completed"></div>
+<div class="dt-field"><label for="goalValue">Target number (optional)</label><input id="goalValue" type="number" min="0" step="any"></div>
+<div class="dt-field"><label for="goalUnit">Unit (optional)</label><input id="goalUnit" placeholder="e.g. reports, students, events, KSh"></div>
+<div class="dt-grid"><div class="dt-field"><label for="goalStart">Start date</label><input id="goalStart" type="date"></div><div class="dt-field"><label for="goalDue">Target date</label><input id="goalDue" type="date"></div></div>
+<button class="dt-btn" type="submit">Save goal</button></form></section>
+<section class="dt-panel" id="submit"><h2>Submit a progress report</h2><form id="reportForm">
+<div class="dt-field"><label for="reportDepartment">Department</label><select id="reportDepartment" required></select></div>
+<div class="dt-field"><label for="reportGoal">Related goal (optional)</label><select id="reportGoal"><option value="">General department update</option></select></div>
+<div class="dt-field"><label for="reportType">Report type</label><select id="reportType"><option value="progress">Progress update</option><option value="achievement">Achievement</option><option value="challenge">Challenge / support needed</option><option value="meeting">Meeting summary</option></select></div>
+<div class="dt-field"><label for="reportTitle">Report title</label><input id="reportTitle" required maxlength="140" placeholder="Short, clear title"></div>
+<div class="dt-field"><label for="reportDetails">What was done, achieved or learned?</label><textarea id="reportDetails" required placeholder="Include results, challenges and next steps…"></textarea></div>
+<div class="dt-field"><label for="reportProgress">Progress (%)</label><input id="reportProgress" type="number" min="0" max="100" placeholder="e.g. 60"></div>
+<div class="dt-field"><label for="reportEvidence">Evidence link (optional)</label><input id="reportEvidence" type="url" placeholder="https://…"></div>
+<div class="dt-grid"><div class="dt-field"><label for="periodStart">Period from</label><input id="periodStart" type="date"></div><div class="dt-field"><label for="periodEnd">Period to</label><input id="periodEnd" type="date"></div></div>
+<button class="dt-btn" type="submit">Submit report</button></form></section></div>
+<section class="dt-section" id="reports"><div class="dt-section-head"><h2>Department reports</h2><span class="dt-muted">Submitted evidence and updates</span></div><div class="dt-list" id="reportList"><div class="dt-card">Loading reports…</div></div></section>
+<section class="dt-panel dt-section dt-hidden" id="access"><h2>Assign department access</h2><p class="dt-muted">Choose an existing approved URWA account and assign it as a department head or member. This does not change their student/teacher/admin account role.</p><form id="membershipForm" class="dt-grid"><div class="dt-field"><label for="memberProfile">Account</label><select id="memberProfile" required></select></div><div class="dt-field"><label for="memberDepartment">Department</label><select id="memberDepartment" required></select></div><div class="dt-field"><label for="memberLevel">Access level</label><select id="memberLevel"><option value="head">Department head</option><option value="member">Team member</option></select></div><div class="dt-field" style="align-self:end"><button class="dt-btn" type="submit">Save department access</button></div></form><div id="membershipList"></div></section>
+</div></div></main></div></div>
+<script type="module" src="../../js/auth.js"></script><script type="module" src="../../js/department-tracker.js"></script>
+</body></html>
