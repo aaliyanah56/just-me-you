@@ -88,7 +88,7 @@ if (registrationForm) registrationForm.addEventListener('submit', async (e) => {
       options: { data: { full_name: fullName, phone, level: $('level').value, programme: $('programme').value, preferred_session: $('session').value || null }, emailRedirectTo: `${location.origin}/portal/student/student-login.html` }
     });
     if (error) throw error;
-    showMessage(registrationForm, 'Registration received. Check your email to confirm your account. Your URWA admission remains pending until administration reviews it.', false);
+    showMessage(registrationForm, 'Your student account has been created and approved automatically. Check your email to confirm your email address if requested, then sign in to access your URWA student portal.', false);
     registrationForm.reset();
   } catch (err) { showMessage(registrationForm, err.message || 'Registration could not be completed.'); }
   finally { button.disabled = false; }
