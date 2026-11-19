@@ -1490,3 +1490,31 @@ main > section h3 {
 #grow-alone .card p {
   color: rgba(251, 246, 233, .92);
 }
+
+
+/* =========================================
+   HOMEPAGE — QUR'AN IMAGE BESIDE SISTERHOOD CTA
+========================================= */
+.connect-quran-figure {
+  width: min(100%, 320px);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.connect-quran-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .2);
+}
+
+.connect-quran-figure figcaption {
+  margin-top: 10px;
+  color: rgba(251, 246, 233, .78);
+  font-size: .78rem;
+  letter-spacing: .04em;
+}
