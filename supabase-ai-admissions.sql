@@ -35,3 +35,6 @@ drop policy if exists "admins record AI admission overrides" on public.admission
 create policy "admins record AI admission overrides"
   on public.admission_ai_reviews for insert to authenticated
   with check (public.is_admin());
+
+-- Security hardening: this function is a database trigger handler, not a client RPC.
+REVOKE EXECUTE ON FUNCTION public.handle_new_urwa_user() FROM PUBLIC, anon, authenticated;
