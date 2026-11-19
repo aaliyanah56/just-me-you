@@ -34,18 +34,6 @@ async function signIn(form, expectedRole) {
   const password = $('password')?.value;
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) throw error;
-  // First student sign-in runs the server-side AI admissions check.
-  if (expectedRole === 'student') {
-    const { data: assessment, error: assessmentError } = await supabase.functions.invoke('ai-student-admissions');
-    if (assessmentError) {
-      await supabase.auth.signOut();
-      throw new Error('URWA AI admissions could not assess your registration yet. Please try again shortly.');
-    }
-    if (assessment?.status !== 'approved') {
-      await supabase.auth.signOut();
-      throw new Error(assessment?.message || 'Your registration has been flagged for a quick URWA team check. Your account has not been rejected.');
-    }
-  }
   let profile;
   try { profile = await getProfile(data.user.id); }
   catch (err) { await supabase.auth.signOut(); throw new Error('Your URWA profile is not ready. Please contact administration.'); }
@@ -100,7 +88,7 @@ if (registrationForm) registrationForm.addEventListener('submit', async (e) => {
       options: { data: { full_name: fullName, phone, level: $('level').value, programme: $('programme').value, preferred_session: $('session').value || null }, emailRedirectTo: `${location.origin}/portal/student/student-login.html` }
     });
     if (error) throw error;
-    showMessage(registrationForm, 'Registration received. Check your email to confirm your address if requested, then sign in. URWA AI will automatically assess your student registration during your first sign-in. If it detects something unusual, your application will be flagged for a quick team check.', false);
+    showMessage(registrationForm, 'Registration received. Check your email to confirm your address if requested. Your application will remain pending until the URWA administration team reviews and approves it. You can sign in once your account has been approved.', false);
     registrationForm.reset();
   } catch (err) { showMessage(registrationForm, err.message || 'Registration could not be completed.'); }
   finally { button.disabled = false; }
