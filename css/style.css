@@ -4,53 +4,24 @@
 ========================================= */
 
 :root {
-  --bg: #fbfaf7;
-  --card: #fff;
-  --tint: #f1eadc;
-  --ink: #17191e;
-  --muted: #687080;
-  --head: #1f2a44;
+  /* URWA emerald, white and warm cream palette */
+  --bg: #fbf6e9;
+  --card: #ffffff;
+  --tint: #e8dcc8;
+  --ink: #18342d;
+  --muted: #64756d;
+  --head: #0e4a40;
   --gold: #c6a75e;
-  --goldtx: #9b7b37;
-  --line: #e8e5de;
-  --band: #1f2a44;
-  --onband: #e0e3e9;
+  --goldtx: #8c6b2c;
+  --line: #e7dfd1;
+  --band: #0e4a40;
+  --onband: #f7f2e8;
 
-  --brand: #1f2a44;
-  --cream: #fbfaf7;
-  --mint: #e8dcc8;
+  --brand: #0e4a40;
+  --cream: #fbf6e9;
+  --mint: #e3f0ea;
 
   color-scheme: light;
-}
-
-:root[data-theme="dark"] {
-  --bg: #121828;
-  --card: #1b2338;
-  --tint: #222b42;
-  --ink: #e9ebf0;
-  --muted: #a9b0bf;
-  --head: #f1e6c8;
-  --goldtx: #d9bd78;
-  --line: #2d3752;
-  --band: #1b2640;
-
-  color-scheme: dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #121828;
-    --card: #1b2338;
-    --tint: #222b42;
-    --ink: #e9ebf0;
-    --muted: #a9b0bf;
-    --head: #f1e6c8;
-    --goldtx: #d9bd78;
-    --line: #2d3752;
-    --band: #1b2640;
-
-    color-scheme: dark;
-  }
 }
 
 
@@ -180,7 +151,7 @@ section {
 }
 
 .dark {
-  background: #1f2a44;
+  background: var(--head);
   color: #fff;
 }
 
@@ -330,7 +301,7 @@ nav details[open] .dd {
 .hero {
   padding: 84px 0;
   background:
-    radial-gradient(circle at 85% 25%, rgba(224, 165, 38, .18), transparent 30%),
+    radial-gradient(circle at 85% 25%, rgba(198, 167, 94, .20), transparent 30%),
     var(--bg);
 }
 
@@ -504,9 +475,16 @@ nav details[open] .dd {
 
 .two {
   display: grid;
-  grid-template-columns: .9fr 1.1fr;
-  gap: 36px;
-  align-items: start;
+  grid-template-columns: minmax(0, .9fr) minmax(320px, 1.1fr);
+  gap: 44px;
+  align-items: center;
+}
+
+.two > .cal {
+  justify-self: end;
+  width: min(100%, 440px);
+  margin: 0;
+  transform: none;
 }
 
 .val {
@@ -985,13 +963,13 @@ nav details[open] .dd {
 ========================================= */
 
 footer {
-  background: #151e32;
-  color: #c6cbd5;
+  background: var(--band);
+  color: var(--onband);
   padding: 52px 0 24px;
 }
 
 footer h4 {
-  color: #e5d3a5;
+  color: #f0dfb8;
   margin: 0 0 12px;
 }
 
@@ -1012,7 +990,7 @@ footer .brand b {
 }
 
 .copy {
-  border-top: 1px solid #354057;
+  border-top: 1px solid rgba(255, 255, 255, .22);
   margin-top: 30px;
   padding-top: 18px;
   font-size: .84rem;
@@ -1062,7 +1040,7 @@ footer .brand b {
 }
 
 .tabs button.on {
-  background: #1f2a44;
+  background: var(--head);
   color: #fff;
 }
 
@@ -1078,7 +1056,7 @@ footer .brand b {
   bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
-  background: #1f2a44;
+  background: var(--head);
   color: #fff;
   padding: 12px 18px;
   border-radius: 99px;
@@ -1194,6 +1172,12 @@ footer .brand b {
   .g3,
   .fg {
     grid-template-columns: 1fr;
+  }
+
+  .two > .cal {
+    justify-self: center;
+    width: min(100%, 440px);
+    margin-inline: auto;
   }
 
   .band {
