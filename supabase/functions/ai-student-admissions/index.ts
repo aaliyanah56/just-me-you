@@ -26,7 +26,7 @@ Deno.serve(async (req: Request) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const secretMap = Deno.env.get("SUPABASE_SECRET_KEYS");
     const serviceKey = secretMap ? JSON.parse(secretMap).default : Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    const openAiKey = Deno.env.get("OPENAI_API_KEY");
+    const openAiKey = Deno.env.get("URWA_KEY") || Deno.env.get("OPENAI_API_KEY");
     if (!supabaseUrl || !serviceKey || !openAiKey) {
       return reply({ error: "Admissions AI is not fully configured. Your application remains pending; please contact URWA support." }, 503);
     }
