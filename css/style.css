@@ -535,59 +535,116 @@ nav details[open] .dd {
 
 
 /* =========================================
-   CALENDAR COMPONENT
+   MONTHLY CALENDAR — HOMEPAGE
 ========================================= */
 
 .cal {
+  width: min(100%, 440px);
+  min-width: 0;
+  padding: 22px;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(14, 74, 64, .08);
 }
 
 .ch {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-weight: 700;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
   color: var(--head);
-  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.ch span {
+  text-align: center;
+  flex: 1;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
 }
 
 .ch button {
-  border: 0;
-  background: var(--tint);
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--bg);
   color: var(--head);
-  border-radius: 8px;
-  padding: 6px 11px;
+  font-size: 1.5rem;
+  line-height: 1;
   cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+
+.ch button:hover {
+  background: var(--head);
+  color: #fff;
 }
 
 .cg {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
   text-align: center;
-  font-size: .85rem;
 }
 
 .cg span {
-  padding: 7px 0;
-  border-radius: 8px;
+  min-width: 0;
+  min-height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
 }
 
-.cg .d {
+.cg .calendar-weekday {
+  min-height: 30px;
   color: var(--muted);
-  font-weight: 700;
   font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-.cg .t {
-  background: var(--band);
+.cg .calendar-empty {
+  visibility: hidden;
+}
+
+.cg .calendar-day {
+  color: var(--ink);
+  font-size: .9rem;
+  transition: background .2s ease, color .2s ease;
+}
+
+.cg .calendar-day.today {
+  background: var(--head);
   color: #fff;
+  font-weight: 800;
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .cal {
+    padding: 16px;
+  }
+
+  .cg {
+    gap: 4px;
+  }
+
+  .cg span {
+    min-height: 36px;
+  }
 }
 
 
+/* =========================================
+   FORMS
 /* =========================================
    FORMS
 ========================================= */
