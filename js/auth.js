@@ -87,8 +87,21 @@ if (registrationForm) registrationForm.addEventListener('submit', async (e) => {
       email, password,
       options: { data: { full_name: fullName, phone, level: $('level').value, programme: $('programme').value, preferred_session: $('session').value || null }, emailRedirectTo: `${location.origin}/portal/student/student-login.html` }
     });
-    if (error) throw error;
-    showMessage(registrationForm, 'Registration received. Check your email to confirm your address if requested. Your application will remain pending until the URWA administration team reviews and approves it. You can sign in once your account has been approved.', false);
+    if (error) {
+      if (error.status === 429 || error.code === 'over_email_send_rate_limit') {
+        throw new Error('URWA cannot send another confirmation email right now because Supabase has reached its email sending limit. Please wait before trying again. The URWA team needs to configure a custom SMTP email provider.');
+      }
+      throw error;
+    }
+    if (Array.isArray(data.user?.identities) && data.user.identities.length === 0) {
+      showMessage(registrationForm, 'An account may already exist with this email address. Please sign in or use Forgot password. No new confirmation email was sent.', true);
+      return;
+    }
+    if (data.session) {
+      showMessage(registrationForm, 'Your account has been created. You can now sign in, but your student application will remain pending until an administrator approves it.', false);
+    } else {
+      showMessage(registrationForm, 'Registration received. Supabase accepted the request. Check your inbox and spam folder for the confirmation email. After confirming, your application will remain pending until an administrator approves it.', false);
+    }
     registrationForm.reset();
   } catch (err) { showMessage(registrationForm, err.message || 'Registration could not be completed.'); }
   finally { button.disabled = false; }
