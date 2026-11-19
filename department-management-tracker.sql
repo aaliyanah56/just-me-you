@@ -50,3 +50,25 @@ create policy "department members read department reports" on public.department_
 create policy "department members submit reports" on public.department_reports for insert to authenticated with check (submitted_by=(select auth.uid()) and exists(select 1 from public.department_memberships m where m.profile_id=(select auth.uid()) and m.department_key=department_reports.department_key));
 create policy "admins review reports or submitters edit pending" on public.department_reports for update to authenticated using (public.is_admin() or (submitted_by=(select auth.uid()) and review_status='submitted')) with check (public.is_admin() or (submitted_by=(select auth.uid()) and review_status='submitted'));
 create policy "admins delete department reports" on public.department_reports for delete to authenticated using (public.is_admin());
+
+-- Scope submitted reports to the submitter's own department and prevent cross-department goal links.
+drop policy if exists "admins review reports or submitters edit pending" on public.department_reports;
+create policy "admins review reports or submitters edit pending"
+on public.department_reports for update to authenticated
+using (public.is_admin() or (submitted_by=(select auth.uid()) and review_status='submitted'))
+with check (
+  public.is_admin()
+  or (
+    submitted_by=(select auth.uid()) and review_status='submitted'
+    and exists (select 1 from public.department_memberships m where m.profile_id=(select auth.uid()) and m.department_key=department_reports.department_key)
+    and (goal_id is null or exists (select 1 from public.department_goals g where g.id=department_reports.goal_id and g.department_key=department_reports.department_key))
+  )
+);
+drop policy if exists "department members submit reports" on public.department_reports;
+create policy "department members submit reports"
+on public.department_reports for insert to authenticated
+with check (
+  submitted_by=(select auth.uid())
+  and exists (select 1 from public.department_memberships m where m.profile_id=(select auth.uid()) and m.department_key=department_reports.department_key)
+  and (goal_id is null or exists (select 1 from public.department_goals g where g.id=department_reports.goal_id and g.department_key=department_reports.department_key))
+);
