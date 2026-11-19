@@ -1355,3 +1355,54 @@ footer .brand b {
   transform: translateY(-4px);
   box-shadow: 0 16px 30px rgba(14, 74, 64, .2);
 }
+
+/* =========================================
+   FEATURE / STORY / COMMUNITY CARDS — EMERALD
+========================================= */
+
+#story .card,
+#about .card,
+#beyond .card,
+#brothers .card,
+#team .card {
+  background: var(--brand);
+  border: 1px solid rgba(198, 167, 94, .55);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(14, 74, 64, .12);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+#story .card h3,
+#about .card h3,
+#beyond .card h3,
+#brothers .card h3,
+#team .card h3,
+#story .card .big,
+#about .card .big,
+#beyond .card .big,
+#brothers .card .big,
+#team .card .big,
+#story .card b,
+#about .card b,
+#beyond .card b,
+#brothers .card b,
+#team .card b {
+  color: #fff;
+}
+
+#story .card p,
+#about .card p,
+#beyond .card p,
+#brothers .card p,
+#team .card p {
+  color: rgba(251, 246, 233, .9);
+}
+
+#story .card:hover,
+#about .card:hover,
+#beyond .card:hover,
+#brothers .card:hover,
+#team .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px rgba(14, 74, 64, .2);
+}
