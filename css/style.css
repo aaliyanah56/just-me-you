@@ -1330,3 +1330,28 @@ footer .brand b {
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================
+   HOMEPAGE PROGRAMME CARDS — EMERALD
+========================================= */
+
+#programmes .grid .card {
+  background: var(--brand);
+  border: 1px solid rgba(198, 167, 94, .55);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(14, 74, 64, .12);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+#programmes .grid .card h3 {
+  color: #fff;
+}
+
+#programmes .grid .card p {
+  color: rgba(251, 246, 233, .88);
+}
+
+#programmes .grid .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 30px rgba(14, 74, 64, .2);
+}
