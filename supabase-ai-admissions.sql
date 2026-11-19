@@ -29,3 +29,9 @@ begin
   return new;
 end;
 $$;
+
+-- Allow authorised admins to record a manual decision after reviewing a flagged registration.
+drop policy if exists "admins record AI admission overrides" on public.admission_ai_reviews;
+create policy "admins record AI admission overrides"
+  on public.admission_ai_reviews for insert to authenticated
+  with check (public.is_admin());
