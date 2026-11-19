@@ -46,7 +46,7 @@ async function loadMemberships(){
 }
 async function setupAdminAccess(){
  $('access').classList.remove('dt-hidden');$('accessNav').classList.remove('dt-hidden');
- const {data,error}=await supabase.from('profiles').select('id,full_name,email,status').order('full_name');
+ const {data,error}=await supabase.from('profiles').select('id,full_name,email,status').eq('status','approved').order('full_name');
  if(error)throw error;allProfiles=data||[];
  $('memberProfile').innerHTML=allProfiles.map(p=>'<option value="'+p.id+'">'+escapeHtml(p.full_name||p.email||p.id)+' · '+escapeHtml(p.status)+'</option>').join('');
  $('memberDepartment').innerHTML=DEPARTMENTS.map(d=>'<option value="'+d.key+'">'+d.name+'</option>').join('');
