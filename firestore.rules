@@ -1,47 +1,53 @@
 rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function isSelf(uid) {
-      return signedIn() && request.auth.uid == uid;
-    }
-
-    function isApprovedAdmin() {
-      return signedIn()
-        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin"
-        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.status == "approved";
-    }
-
-    match /users/{uid} {
-      allow read: if isSelf(uid) || isApprovedAdmin();
-
-      // Public registration can create student accounts only.
-      // Privileged roles/statuses must be assigned by a trusted admin process.
-      allow create: if isSelf(uid)
-        && request.resource.data.role == "student"
-        && request.resource.data.status == "approved"
-        && request.resource.data.keys().hasOnly([
-          "fullName", "email", "phone", "level", "programme",
-          "preferredSession", "role", "status", "createdAt"
-        ]);
-
-      allow update: if isSelf(uid)
-        && request.resource.data.role == resource.data.role
-        && request.resource.data.status == resource.data.status
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-          "fullName", "phone", "level", "programme", "preferredSession", "updatedAt"
-        ]);
-
-      allow delete: if isApprovedAdmin();
-    }
-
-    // Other collections remain closed until their access rules are deliberately designed.
-    match /{document=**} {
-      allow read, write: if false;
-    }
+ match /databases/{database}/documents {
+  function signed(){return request.auth!=null;}
+  function me(){return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;}
+  function admin(){return signed() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && me().role=='admin' && me().status=='approved';}
+  function approvedTeacher(){return signed() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && me().role in ['teacher','abla'] && me().status=='approved';}
+  function teacherOf(hid){return admin() || (approvedTeacher() && exists(/databases/$(database)/documents/teacherAssignments/$(request.auth.uid+'_'+hid)));}
+  function memberOf(dept){return admin() || exists(/databases/$(database)/documents/departmentMemberships/$(request.auth.uid+'_'+dept));}
+  match /users/{uid}{
+   allow create: if signed() && request.auth.uid==uid && request.resource.data.role=='student' && request.resource.data.status=='pending';
+   allow read: if signed() && (request.auth.uid==uid || admin() || (approvedTeacher() && exists(/databases/$(database)/documents/studentEnrollments/$(uid)) && teacherOf(get(/databases/$(database)/documents/studentEnrollments/$(uid)).data.halaqaId)));
+   allow update,delete: if admin();
   }
+  match /studentEnrollments/{uid}{
+   allow create: if signed() && request.auth.uid==uid && request.resource.data.studentId==uid && request.resource.data.status=='pending' && request.resource.data.halaqaId==null;
+   allow read: if signed() && (request.auth.uid==uid || admin() || teacherOf(resource.data.halaqaId));
+   allow update,delete: if admin();
+  }
+  match /halaqas/{hid}{allow read: if signed() && (admin() || me().status=='approved'); allow write: if admin();}
+  match /teacherAssignments/{aid}{
+   allow read: if signed() && (admin() || resource.data.teacherId==request.auth.uid);
+   allow write: if admin();
+  }
+  match /attendance/{aid}{
+   allow read: if signed() && (admin() || resource.data.studentId==request.auth.uid || teacherOf(resource.data.halaqaId));
+   allow create,update: if signed() && (admin() || (approvedTeacher() && request.resource.data.recordedBy==request.auth.uid && teacherOf(request.resource.data.halaqaId)));
+   allow delete: if admin();
+  }
+  match /assignments/{aid}{
+   allow read: if signed() && (admin() || resource.data.teacherId==request.auth.uid || (exists(/databases/$(database)/documents/studentEnrollments/$(request.auth.uid)) && get(/databases/$(database)/documents/studentEnrollments/$(request.auth.uid)).data.halaqaId==resource.data.halaqaId));
+   allow create: if approvedTeacher() && request.resource.data.teacherId==request.auth.uid && teacherOf(request.resource.data.halaqaId);
+   allow update,delete: if admin() || (approvedTeacher() && resource.data.teacherId==request.auth.uid && teacherOf(resource.data.halaqaId));
+  }
+  match /hifdhRecords/{id}{allow read,create: if signed() && (admin() || request.resource.data.studentId==request.auth.uid || resource.data.studentId==request.auth.uid); allow update,delete: if admin() || (signed() && resource.data.studentId==request.auth.uid);}
+  match /murajaahRecords/{id}{allow read,create: if signed() && (admin() || request.resource.data.studentId==request.auth.uid || resource.data.studentId==request.auth.uid); allow update,delete: if admin() || (signed() && resource.data.studentId==request.auth.uid);}
+  match /announcements/{id}{allow read: if signed() && (admin() || resource.data.audience=='all' || (resource.data.audience=='students' && me().role=='student') || (resource.data.audience=='teachers' && me().role in ['teacher','abla'])); allow create,update,delete: if admin();}
+  match /departmentMemberships/{id}{allow read: if signed() && (admin() || resource.data.profileId==request.auth.uid); allow write: if admin();}
+  match /departmentGoals/{id}{
+   allow read: if signed() && memberOf(resource.data.departmentKey);
+   allow create: if signed() && request.resource.data.createdBy==request.auth.uid && (admin() || (memberOf(request.resource.data.departmentKey) && get(/databases/$(database)/documents/departmentMemberships/$(request.auth.uid+'_'+request.resource.data.departmentKey)).data.accessLevel=='head'));
+   allow update: if admin() || (signed() && memberOf(resource.data.departmentKey) && get(/databases/$(database)/documents/departmentMemberships/$(request.auth.uid+'_'+resource.data.departmentKey)).data.accessLevel=='head');
+   allow delete: if admin();
+  }
+  match /departmentReports/{id}{
+   allow read: if signed() && memberOf(resource.data.departmentKey);
+   allow create: if signed() && request.resource.data.submittedBy==request.auth.uid && memberOf(request.resource.data.departmentKey);
+   allow update: if admin() || (signed() && resource.data.submittedBy==request.auth.uid && resource.data.reviewStatus=='submitted' && memberOf(resource.data.departmentKey));
+   allow delete: if admin();
+  }
+  match /{document=**}{allow read,write:false;}
+ }
 }
