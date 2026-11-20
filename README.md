@@ -5,44 +5,59 @@ URWA is an Islamic learning and community platform with public programme informa
 ## Technology
 - Frontend: HTML, CSS and JavaScript
 - Source control: GitHub — https://github.com/aaliyanah56/Urwa
-- Backend: Supabase (Postgres, Auth and Row Level Security)
-- Hosting: Vercel (Git-connected deployments)
+- Authentication: Firebase Authentication
+- Database: Cloud Firestore
+- Hosting and deployment: Vercel
 
-GitHub is the source of truth for code, Supabase stores application data and handles authentication, and Vercel serves the website.
+GitHub is the source of truth for code, Firebase provides authentication and application data, and Vercel serves the website. This repository does not use Supabase or Netlify.
+
+## Firebase project
+- Project ID: `urwa-f3263`
+- Auth domain: `urwa-f3263.firebaseapp.com`
+- Firestore database: Cloud Firestore
+
+The Firebase web configuration in `js/firebase.js` is a public client configuration. Never commit service-account keys or other privileged credentials.
 
 ## Project structure
 - `assets/` — logos and images
 - `css/` — public site, authentication and dashboard styles
-- `js/` — authentication and dashboard behaviour
+- `js/firebase.js` — Firebase client setup
+- `js/firebase-auth.js` — Firebase Authentication and role checks
+- `js/dashboard-data.js` — student, Abla and admin Firestore workflows
+- `js/department-tracker.js` — Firestore department tracker
+- `firestore.rules` — role-scoped Firestore security rules
 - `portal/admin/` — administrator portal
 - `portal/abla/` — Abla / teacher portal
 - `portal/student/` — student portal
-- `supabase-schema.sql` — reference initial schema; do not rerun on the live database
-- `SUPABASE-SETUP.md` — backend setup and security notes
+
+## Account lifecycle
+- Public registration creates student accounts with **pending** status.
+- An administrator reviews applications, assigns a halaqa and approves or declines the student.
+- Staff accounts must be created in Firebase Authentication and provisioned with a trusted Firestore profile. Never expose admin or teacher role selection in public registration.
+- Firestore Security Rules are the final authority; client-side role checks are not a security boundary.
+
+## Firebase setup
+1. Open the Firebase project `urwa-f3263`.
+2. Enable Email/Password in Authentication.
+3. Create the Cloud Firestore database.
+4. Add the production Vercel domain and localhost development domain to Authentication → Settings → Authorized domains.
+5. Publish the rules in `firestore.rules` from Firebase Console → Firestore Database → Rules.
+6. Create the initial approved admin user in Firebase Authentication, then provision that user's `users/{uid}` profile using a trusted administrator process. Do not allow a public form to create an admin role.
+7. Seed the `halaqas` collection with documents containing `name` and `isActive: true`.
 
 ## Local development
 1. Clone: `git clone https://github.com/aaliyanah56/Urwa.git`
 2. Open the folder in VS Code.
 3. Run with VS Code Live Server or another static server (workspace port 5502).
-4. The browser client uses the Supabase project URL and publishable key in `js/auth.js`.
-
-Never commit a Supabase secret/service-role key, database password, SMTP credential or Vercel token.
-
-## Account lifecycle
-- Public registration creates student accounts only; new applications start pending.
-- Admin reviews applications, assigns a halaqa and accepts or declines the student.
-- Abla accounts are invited by an administrator in Supabase Auth, then assigned the `teacher` role, approved and allocated to halaqas.
-- Database RLS is the final authority; client-side role checks are not a security boundary.
+4. Firebase web settings are read from `js/firebase.js`.
 
 ## Deploy to Vercel
-1. In Vercel choose **Add New → Project** and import `aaliyanah56/Urwa`.
+1. Import `aaliyanah56/Urwa` into Vercel.
 2. Select branch `main`, framework preset **Other**, leave build/install commands empty and set output directory to `.`.
-3. Deploy and copy the actual production URL assigned by Vercel.
-4. Set that URL as Supabase Auth Site URL and add `https://*.vercel.app/**` and `http://localhost:5502/**` as redirect URLs.
-5. Pushes to `main` trigger automatic Vercel deployments.
+3. Pushes to the connected deployment branch trigger Vercel deployments.
 
-## Dashboard features
-Admin: student and Abla directories, pending student approvals, halaqa assignment and announcements. Abla: assigned roster, attendance entry and assignment creation. Student: admission/programme status, attendance summary and Abla assignments. Student submissions, Hifdh/Muraja'ah entry, reporting and timetable management still require dedicated workflows and end-to-end testing.
+## Important migration note
+The application code is being migrated to Firebase. The former Supabase-hosted database is a separate service and is not deleted by removing its code from this repository. Export and verify any required records before closing that old service. Firebase Authentication users must be reactivated or reset through a secure migration process; passwords cannot simply be copied from the old provider.
 
-## Responsive design
-Dashboard tables scroll horizontally on small screens and the layouts adapt for desktop, tablet and mobile widths.
+## Dashboard coverage
+Admin: student and Abla directories, pending student approvals, halaqa assignment and announcements. Abla: assigned roster, attendance entry and assignment creation. Student: admission/programme status, attendance summary and Abla assignments. Department tracker: department memberships, goals and reports. Test all roles and workflows with dedicated accounts before production launch.
