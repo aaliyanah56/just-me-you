@@ -5,7 +5,7 @@ This package contains the complete planned page structure:
 - Public pages: Home, About, Programmes, Classes, Teachers, Events, Contact, Enroll, Become a Teacher
 - Portal pages: portal home, student login/register/dashboard, teacher login/dashboard, admin dashboard
 - Shared CSS: css/style.css, css/pages.css, css/dashboard.css
-- Shared JavaScript: js/main.js, js/navigation.js, js/auth.js, js/portal.js
+- Shared JavaScript: js/main.js, js/navigation.js, js/firebase-auth.js, js/portal.js
 - Existing URWA logo: assets/logo.jpg
 
 HOW TO PREVIEW
