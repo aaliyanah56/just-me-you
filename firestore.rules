@@ -32,8 +32,18 @@ service cloud.firestore {
    allow create: if approvedTeacher() && request.resource.data.teacherId==request.auth.uid && teacherOf(request.resource.data.halaqaId);
    allow update,delete: if admin() || (approvedTeacher() && resource.data.teacherId==request.auth.uid && teacherOf(resource.data.halaqaId));
   }
-  match /hifdhRecords/{id}{allow read,create: if signed() && (admin() || request.resource.data.studentId==request.auth.uid || resource.data.studentId==request.auth.uid); allow update,delete: if admin() || (signed() && resource.data.studentId==request.auth.uid);}
-  match /murajaahRecords/{id}{allow read,create: if signed() && (admin() || request.resource.data.studentId==request.auth.uid || resource.data.studentId==request.auth.uid); allow update,delete: if admin() || (signed() && resource.data.studentId==request.auth.uid);}
+  match /hifdhRecords/{id}{
+   allow read: if signed() && (admin() || resource.data.studentId==request.auth.uid);
+   allow create: if signed() && request.resource.data.studentId==request.auth.uid;
+   allow update: if signed() && (admin() || (resource.data.studentId==request.auth.uid && request.resource.data.studentId==request.auth.uid));
+   allow delete: if admin();
+  }
+  match /murajaahRecords/{id}{
+   allow read: if signed() && (admin() || resource.data.studentId==request.auth.uid);
+   allow create: if signed() && request.resource.data.studentId==request.auth.uid;
+   allow update: if signed() && (admin() || (resource.data.studentId==request.auth.uid && request.resource.data.studentId==request.auth.uid));
+   allow delete: if admin();
+  }
   match /announcements/{id}{allow read: if signed() && (admin() || resource.data.audience=='all' || (resource.data.audience=='students' && me().role=='student') || (resource.data.audience=='teachers' && me().role in ['teacher','abla'])); allow create,update,delete: if admin();}
   match /departmentMemberships/{id}{allow read: if signed() && (admin() || resource.data.profileId==request.auth.uid); allow write: if admin();}
   match /departmentGoals/{id}{
