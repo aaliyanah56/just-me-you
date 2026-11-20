@@ -72,7 +72,7 @@ async function signIn(form, expectedRole) {
 const studentLogin = $('studentLoginForm');
 if (studentLogin) studentLogin.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const button = studentLogin.querySelector('[type="submit]');
+  const button = studentLogin.querySelector('[type="submit"]');
   if (button) button.disabled = true;
   try { await signIn(studentLogin, 'student'); }
   catch (error) { showMessage(studentLogin, error.message || 'Unable to sign in.'); }
@@ -82,7 +82,7 @@ if (studentLogin) studentLogin.addEventListener('submit', async (event) => {
 const staffForm = document.querySelector('[data-staff-login]');
 if (staffForm) staffForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const button = staffForm.querySelector('[type="submit]');
+  const button = staffForm.querySelector('[type="submit"]');
   if (button) button.disabled = true;
   try { await signIn(staffForm, staffForm.dataset.staffLogin === 'abla' ? 'teacher' : staffForm.dataset.staffLogin); }
   catch (error) { showMessage(staffForm, error.message || 'Unable to sign in.'); }
@@ -92,7 +92,7 @@ if (staffForm) staffForm.addEventListener('submit', async (event) => {
 const adminForm = $('adminLoginForm');
 if (adminForm) adminForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const button = adminForm.querySelector('[type="submit]');
+  const button = adminForm.querySelector('[type="submit"]');
   if (button) button.disabled = true;
   try { await signIn(adminForm, 'admin'); }
   catch (error) { showMessage(adminForm, error.message || 'Unable to sign in.'); }
@@ -106,7 +106,7 @@ if (registrationForm) registrationForm.addEventListener('submit', async (event) 
   const confirmation = $('confirmPassword')?.value || '';
   if (password.length < 8) return showMessage(registrationForm, 'Use a password with at least 8 characters.');
   if (password !== confirmation) return showMessage(registrationForm, 'Your passwords do not match.');
-  const button = registrationForm.querySelector('[type="submit]');
+  const button = registrationForm.querySelector('[type="submit"]');
   if (button) button.disabled = true;
   let createdUser = null;
   try {
@@ -161,7 +161,7 @@ document.querySelectorAll('[data-toggle-password]').forEach((button) => button.a
 const forgotForm = $('studentForgotPasswordForm');
 if (forgotForm) forgotForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const button = forgotForm.querySelector('[type="submit]');
+  const button = forgotForm.querySelector('[type="submit"]');
   if (button) button.disabled = true;
   try {
     const email = $('email')?.value.trim();
@@ -191,7 +191,7 @@ if (resetForm) {
   }
   resetForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const button = resetForm.querySelector('[type="submit]');
+    const button = resetForm.querySelector('[type="submit"]');
     if (button) button.disabled = true;
     try {
       const password = $('newPassword')?.value || '';
